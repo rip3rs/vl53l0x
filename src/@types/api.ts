@@ -29,7 +29,7 @@ export interface API {
         [key: string]: number
       }
   >
-  setMeasurementTimingBudget(budget_us: number, pin: string | number): Promise<void>
+  setMeasurementTimingBudget(budget_us: number, pin?: string | number): Promise<void>
   setVcselPulsePeriod: (type: 'pre' | 'final', period_pclks: 8 | 10 | 12 | 14 | 16 | 18, pin?: number) => Promise<void>
   getVcselPulsePeriod(
     type: number,

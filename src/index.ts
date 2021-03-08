@@ -117,7 +117,7 @@ export default class VL53L0X extends I2CCore {
     await this._writeReg(REG.SYSTEM_SEQUENCE_CONFIG, 0xe8, this._addresses[pin].addr)
   }
 
-  private async _setMeasurementTimingBudget(budget_us: number, pin: number | string): Promise<void> {
+  private async _setMeasurementTimingBudget(budget_us: number, pin?: number | string): Promise<void> {
     if (budget_us < 20000) {
       throw new Error('budget below MinTimingBudget')
     }
