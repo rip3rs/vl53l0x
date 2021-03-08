@@ -18,7 +18,9 @@
     "preversion": "npm run lint:fix",
     "version": "npm run format && git add -A .",
     "postversion": "git push && git push --tags",
-    "newGitTag": "npm version patch"
+    "releasePatch": "npm version patch && npm publish",
+    "releaseMinor": "npm version minor && npm publish",
+    "releaseMajor": "npm version major && npm publish"
   },
   "repository": {
     "type": "git",
