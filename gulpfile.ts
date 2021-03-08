@@ -6,6 +6,7 @@ import run from 'gulp-run-command'
 const config = {
   remoteFolderPath: '/home/pi/vl53l0x',
   ssh: {
+    // host: '192.168.1.113',
     host: '192.168.1.111',
     port: 22,
     username: 'pi',

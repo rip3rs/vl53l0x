@@ -7,22 +7,15 @@ const XSHUT = [
 ]
 
 // TODO: fix loop of pins
-const vl53l0x17 = new VL53L0X(XSHUT)
+const Vl53l0x = new VL53L0X()
 
 let interval = null
 const init = async () => {
-  await vl53l0x17.init()
-  // await vl53l0x22.init()
-  // await vl53l0x23.init()
-  // await vl53l0x27.init()
-
-  // await vl53l0x.api.setSignalRateLimit(0.1)
-  // await vl53l0x.api.setVcselPulsePeriod('pre', 18)
-  // await vl53l0x.api.setVcselPulsePeriod('final', 14)
-  // await vl53l0x17.api.setMeasurementTimingBudget(400000)
-  // await vl53l0x22.api.setMeasurementTimingBudget(400000)
-  // await vl53l0x23.api.setMeasurementTimingBudget(400000)
-  // await vl53l0x27.api.setMeasurementTimingBudget(400000)
+  await Vl53l0x.init()
+  await Vl53l0x.api.setSignalRateLimit(0.1, 99)
+  await Vl53l0x.api.setVcselPulsePeriod('pre', 18, 99)
+  await Vl53l0x.api.setVcselPulsePeriod('final', 14, 99)
+  await Vl53l0x.api.setMeasurementTimingBudget(400000, 99)
 
   getMeasurement()
 }
@@ -30,14 +23,27 @@ const init = async () => {
 const getMeasurement = async () => {
   clearInterval(interval)
   interval = null
-  const measure = await vl53l0x17.api.measure()
-  // const measure22 = await vl53l0x22.api.measure()
-  // const measure23 = await vl53l0x23.api.measure()
-  // const measure27 = await vl53l0x27.api.measure()
 
   const now = new Date()
 
-  console.log(measure, [now.getHours(), ':', now.getMinutes(), ':', now.getSeconds()].join(''))
+  const measure = await Vl53l0x.api.measure(99)
+  console.log('TEST.TS', measure, [now.getHours(), ':', now.getMinutes(), ':', now.getSeconds()].join(''))
+
+  // setTimeout(async () => {
+  //   const measure22 = await vl53l0x.api.measure()
+  //   console.log('22:', measure22, [now.getHours(), ':', now.getMinutes(), ':', now.getSeconds()].join(''))
+  // }, 200)
+
+  // setTimeout(async () => {
+  //   const measure23 = await vl53l0x.api.measure()
+  //   console.log('23:', measure23, [now.getHours(), ':', now.getMinutes(), ':', now.getSeconds()].join(''))
+  // }, 300)
+
+  // setTimeout(async () => {
+  //   const measure27 = await vl53l0x.api.measure()
+  //   console.log('27:', measure27, [now.getHours(), ':', now.getMinutes(), ':', now.getSeconds()].join(''))
+  // }, 400)
+
   // console.log(22, measure22, [now.getHours(), ':', now.getMinutes(), ':', now.getSeconds()].join(''))
   // console.log(23, measure23, [now.getHours(), ':', now.getMinutes(), ':', now.getSeconds()].join(''))
   // console.log(27, measure27, [now.getHours(), ':', now.getMinutes(), ':', now.getSeconds()].join(''))
@@ -47,7 +53,7 @@ const getMeasurement = async () => {
   // to avoid un-handled errors and, on Node.js, do not call process.exit
   // as it will pre-empt the event loop without any respect for timers.
   // More detail in Async, Promises, and Timers in Node.js.
-  interval = setInterval(getMeasurement, 1000)
+  interval = setInterval(getMeasurement, 500)
 }
 
 init()
