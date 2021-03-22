@@ -163,7 +163,7 @@ const arrayOfSensors = [
 ### API
 
 ```typescript
-  measure: (pin?: number | string) => Promise<number>
+  measure: (pin?: number | string) => Promise<number> | Promise<{[pin: number]: number}>
   setSignalRateLimit(limit_Mcps: number, pin?: string | number): Promise<void | { [key: string]: BytesWritten } | BytesWritten>
   getSignalRateLimit(pin?: string | number): Promise<number | { [key: string]: number }>
   getMeasurementTimingBudget(pin?: string | number): Promise<number | { [key: string]: number }>

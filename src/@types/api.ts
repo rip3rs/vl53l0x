@@ -2,7 +2,7 @@ import { BytesWritten } from 'i2c-bus'
 import { REG } from './registry'
 
 export interface API {
-  measure: (pin?: number | string) => Promise<number>
+  measure: (pin?: number | string) => Promise<number | { [pin: number]: number }>
   setSignalRateLimit(
     limit_Mcps: number,
     pin?: string | number
