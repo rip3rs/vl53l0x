@@ -468,9 +468,27 @@ export default class VL53L0X extends I2CCore {
     }
   }
 
+  private async _resetPinsAddresses(): Promise<void> {
+    for (const pin of Object.keys(this._addresses)) {
+      if (this._addresses[pin].gpio) {
+        await this._gpioWrite(this._addresses[pin].gpio, 0)
+      }
+    }
+
+    for (const pin of Object.keys(this._addresses)) {
+      if (this._addresses[pin].gpio) {
+        await this._gpioWrite(this._addresses[pin].gpio, 1)
+      }
+    }
+  }
+
   public get api(): API {
     return {
       measure: this._getRangeMillimeters.bind(this),
+      resetPinsAddresses: this._resetPinsAddresses.bind(this),
+      config: this._config,
+      addresses: this._addresses,
+      scanAddressesBeingUsed: this._scan.bind(this),
       setSignalRateLimit: this._setSignalRateLimit.bind(this),
       getSignalRateLimit: this._getSignalRateLimit.bind(this),
       getMeasurementTimingBudget: this._getMeasurementTimingBudget.bind(this),

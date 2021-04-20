@@ -8,11 +8,7 @@ import { ISequenceEnabled, ISequenceTimeouts } from '#types/sequence'
 import { BinaryValue, Gpio } from 'onoff'
 import { OPTS } from '#types/options'
 import { IAddresses } from '#types/addresses'
-
-interface IConfig {
-  bus: number
-  devices: IAddresses | number
-}
+import { IConfig } from '#types/config'
 
 export default class I2CCore {
   private _busModule: PromisifiedBus
@@ -55,15 +51,19 @@ export default class I2CCore {
     }
   }
 
-  protected async _scan(): Promise<void> {
-    const scan = (await this._busModule.scan()).map((s) => '0x' + s.toString(16))
-    console.log('SCAN', scan)
+  protected async _scan(): Promise<{ scan: number[]; hex: string[] }> {
+    const scan = await this._busModule.scan()
+    const hex = scan.map((s) => '0x' + s.toString(16))
+
+    console.log('SCAN', scan, hex)
+
+    return { scan, hex }
   }
 
-  protected get config(): IConfig {
+  protected get _config(): IConfig {
     return {
       bus: this._bus,
-      devices: this._addresses,
+      options: this._options,
     }
   }
 
