@@ -1,8 +1,14 @@
 import { BytesWritten } from 'i2c-bus'
+import { IAddresses } from './addresses'
+import { IConfig } from './config'
 import { REG } from './registry'
 
 export interface API {
   measure: (pin?: number | string) => Promise<number | { [pin: number]: number }>
+  resetPinsAddresses: () => Promise<void>
+  config: IConfig
+  addresses: IAddresses
+  scanAddressesBeingUsed: () => Promise<{ scan: number[]; hex: string[] }>
   setSignalRateLimit(
     limit_Mcps: number,
     pin?: string | number
