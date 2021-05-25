@@ -156,6 +156,8 @@ const arrayOfSensors = [
     final: 12 | 14 | 16 | 18
   }
   measurementTimingBudget?: number
+  distanceOffset?: number
+  regAddressRead?: number
 ```
 
 ### vl53l0x.api: API

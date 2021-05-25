@@ -42,6 +42,10 @@ export default class VL53L0X extends I2CCore {
     if (this._options.measurementTimingBudget) {
       await this._setMeasurementTimingBudget(this._options.measurementTimingBudget, pin)
     }
+
+    if (this._options.distanceOffset) {
+      await this._setDistanceOffset(this._options.distanceOffset, pin)
+    }
   }
 
   private async _setup(pin: number | string): Promise<void> {
@@ -115,6 +119,10 @@ export default class VL53L0X extends I2CCore {
 
     // "restore the previous Sequence Config"
     await this._writeReg(REG.SYSTEM_SEQUENCE_CONFIG, 0xe8, this._addresses[pin].addr)
+  }
+
+  private async _setDistanceOffset(distanceOffset: number, pin: number | string): Promise<void> {
+    await this._writeReg(REG.PRE_RANGE_CONFIG_SIGMA_THRESH_HI, distanceOffset, this._addresses[pin].addr, true)
   }
 
   private async _setMeasurementTimingBudget(budget_us: number, pin?: number | string): Promise<void> {
@@ -277,7 +285,7 @@ export default class VL53L0X extends I2CCore {
         await this._writeReg(REG.SYSRANGE_START, REG.SYSTEM_SEQUENCE_CONFIG, this._addresses[pin].addr)
         // assumptions: Linearity Corrective Gain is 1000 (default);
         // fractional ranging is not enabled
-        toReturn[pin] = await this._readReg(REG.RESULT_RANGE, this._addresses[pin].addr, true)
+        toReturn[pin] = await this._readReg(this._options.regAddressRead, this._addresses[pin].addr, true)
         await this._writeReg(REG.SYSTEM_INTERRUPT_CLEAR, REG.SYSTEM_SEQUENCE_CONFIG, this._addresses[pin].addr)
 
         return toReturn
@@ -293,7 +301,7 @@ export default class VL53L0X extends I2CCore {
         await this._writeReg(REG.SYSRANGE_START, REG.SYSTEM_SEQUENCE_CONFIG, this._addresses[p].addr)
         // assumptions: Linearity Corrective Gain is 1000 (default);
         // fractional ranging is not enabled
-        toReturn[p] = await this._readReg(REG.RESULT_RANGE, this._addresses[p].addr, true)
+        toReturn[p] = await this._readReg(this._options.regAddressRead, this._addresses[p].addr, true)
         await this._writeReg(REG.SYSTEM_INTERRUPT_CLEAR, REG.SYSTEM_SEQUENCE_CONFIG, this._addresses[p].addr)
       }
       return toReturn

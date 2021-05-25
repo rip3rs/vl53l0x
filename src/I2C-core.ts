@@ -21,6 +21,7 @@ export default class I2CCore {
       final: 14,
     },
     measurementTimingBudget: 400000,
+    regAddressRead: REG.RESULT_RANGE,
   }
 
   constructor(address: number[][] | number, bus: number) {

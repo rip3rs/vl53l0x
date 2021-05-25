@@ -5,4 +5,6 @@ export interface OPTS {
     final: 12 | 14 | 16 | 18
   }
   measurementTimingBudget?: number
+  distanceOffset?: number
+  regAddressRead?: number
 }
